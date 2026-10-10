@@ -16,8 +16,8 @@
   --chip:rgba(0,48,120,.04); --chip-2:rgba(0,48,120,.07); --bg-gray:#F5F7FA; --white:#fff;
   --pink:#F1117E; --green:#00C451; --green-dark:#00A042; --green-bg:rgba(0,196,81,.12);
   --purple:#5B51DE; --star:#FFA800;
-  /* выведено из палитры для статуса «едет издалека» */
-  --amber:#C26A00; --amber-bg:rgba(255,149,0,.12);
+  /* статус «едет из-за рубежа»: информационный голубой Ozon */
+  --abroad:#005BFF; --abroad-bg:rgba(55,175,255,.14);
   --shadow:0 13px 16px rgba(0,26,52,.1); --shadow-s:0 4px 12px rgba(0,26,52,.08);
   --r-s:8px; --r-m:12px; --r-l:16px; --r-xl:22px;
   --font:'Onest','Ozon Sans',Arial,sans-serif;
@@ -79,10 +79,10 @@ svg{display:block;flex-shrink:0}
 .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px 16px;padding-bottom:64px}
 .tile{display:flex;flex-direction:column;gap:6px;cursor:pointer;min-width:0}
 .tile .ph{position:relative;aspect-ratio:3/4;border-radius:var(--r-m);background:var(--bg-gray);display:grid;place-items:center;overflow:hidden}
-.tile .ph>svg{width:72%;height:auto}
+.tile .ph>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .tile:hover .ph{background:#EEF1F6}
 .tile .fav{position:absolute;top:8px;right:8px;width:32px;height:32px;display:grid;place-items:center;color:var(--text-3)}
-.badge-abroad{position:absolute;left:8px;top:8px;display:flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:var(--r-s);background:rgba(255,255,255,.94);color:var(--amber);font-size:12px;font-weight:600;box-shadow:var(--shadow-s)}
+.badge-abroad{position:absolute;left:8px;top:8px;display:flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:var(--r-s);background:rgba(255,255,255,.94);color:var(--abroad);font-size:12px;font-weight:600;box-shadow:var(--shadow-s)}
 .tile .prc{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-top:4px}
 .tile .prc b{font-size:20px;line-height:24px;font-weight:700;color:var(--pink)}
 .tile .prc s{color:var(--text-3);font-size:13px}
@@ -92,7 +92,6 @@ svg{display:block;flex-shrink:0}
 .rt svg{color:var(--star)}
 .tile .dbtn{margin-top:auto;height:36px;border-radius:var(--r-m);background:var(--blue);color:#fff;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 10px;white-space:nowrap;overflow:hidden}
 .tile .dbtn small{font-weight:400;opacity:.85;font-size:12px}
-.tile.far .dbtn{background:var(--blue-light);color:var(--blue)}
 .empty-res{grid-column:1/-1;background:var(--bg-gray);border-radius:var(--r-l);padding:40px;text-align:center;color:var(--text-2)}
 
 /* ===== Карточка товара ===== */
@@ -101,9 +100,9 @@ svg{display:block;flex-shrink:0}
 .thumbs{display:flex;flex-direction:column;gap:8px}
 .thumbs button{width:56px;height:72px;border-radius:var(--r-s);background:var(--bg-gray);display:grid;place-items:center;outline:2px solid transparent;outline-offset:-2px}
 .thumbs button.on{outline-color:var(--blue)}
-.thumbs svg{width:40px;height:auto}
+.thumbs button{overflow:hidden}.thumbs img{width:100%;height:100%;object-fit:cover}
 .mainph{position:relative;aspect-ratio:3/4;border-radius:var(--r-l);background:var(--bg-gray);display:grid;place-items:center}
-.mainph>svg{width:66%;height:auto}
+.mainph{overflow:hidden}.mainph>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .mainph .lbl{position:absolute;top:12px;left:12px;height:30px;padding:0 10px;border-radius:var(--r-s);background:#fff;font-size:13px;font-weight:500;display:flex;align-items:center;box-shadow:var(--shadow-s)}
 .mainph .pick{position:absolute;top:12px;right:12px;height:28px;padding:0 10px;border-radius:var(--r-s);background:var(--green-bg);color:var(--green-dark);font-size:13px;font-weight:500;display:flex;align-items:center;gap:4px}
 .info h1{font-size:24px;line-height:30px;font-weight:700;color:var(--heading);margin-bottom:12px}
@@ -138,7 +137,7 @@ svg{display:block;flex-shrink:0}
 .origin .days{margin-left:auto;text-align:right;white-space:nowrap}
 .origin .days b{display:block;font-size:20px;line-height:22px;font-weight:700}
 .origin .days span{font-size:12px;color:var(--text-2)}
-.origin.far{background:var(--amber-bg)}.origin.far .ic,.origin.far .days b{color:var(--amber)}
+.origin.far{background:var(--abroad-bg)}.origin.far .ic,.origin.far .days b{color:var(--abroad)}
 .origin.near{background:var(--green-bg)}.origin.near .ic,.origin.near .days b{color:var(--green-dark)}
 .terms{margin-top:8px;border-radius:var(--r-m);background:var(--chip);overflow:hidden}
 .terms-h{width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px;font-weight:600;font-size:14px;color:var(--heading)}
@@ -180,7 +179,7 @@ svg{display:block;flex-shrink:0}
 .alt{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(0,26,52,.06)}
 .alt:last-child{border-bottom:0}
 .alt .th{width:52px;height:64px;border-radius:var(--r-s);background:var(--bg-gray);display:grid;place-items:center}
-.alt .th svg{width:38px;height:auto}
+.alt .th{overflow:hidden}.alt .th img{width:100%;height:100%;object-fit:cover}
 .alt .an{font-size:13px;line-height:16px;color:var(--heading);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .alt .am{display:flex;gap:6px;align-items:center;margin-top:5px;flex-wrap:wrap}
 .dpill{height:22px;padding:0 7px;border-radius:6px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;background:var(--green-bg);color:var(--green-dark)}
@@ -224,7 +223,7 @@ body.mode-old .old-only.blk{display:block}
 .mill svg{width:100%;height:auto;max-height:170px}
 .sumbox{margin-top:16px;border-radius:var(--r-m);background:var(--chip);padding:12px;display:flex;gap:12px;align-items:center}
 .sumbox .th{width:48px;height:60px;border-radius:var(--r-s);background:#fff;display:grid;place-items:center}
-.sumbox .th svg{width:34px;height:auto}
+.sumbox .th{overflow:hidden}.sumbox .th img{width:100%;height:100%;object-fit:cover}
 .sumbox b{font-size:14px;color:var(--heading);display:block}
 .sumbox span{font-size:13px;color:var(--text-2)}
 .opts{margin-top:14px;display:flex;flex-direction:column;gap:8px}
@@ -312,7 +311,7 @@ body.mode-old .old-only.blk{display:block}
       <button class="btn-cat"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2.5"/><rect x="13" y="3" width="8" height="8" rx="2.5"/><rect x="3" y="13" width="8" height="8" rx="2.5"/><rect x="13" y="13" width="8" height="8" rx="2.5"/></svg>Каталог</button>
       <form class="search" onsubmit="event.preventDefault();go('list')">
         <span class="scope">Везде <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
-        <input id="q" value="органайзер для проводов" aria-label="Поиск">
+        <input id="q" value="наушники беспроводные" aria-label="Поиск">
         <button class="go" aria-label="Найти"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
       </form>
       <nav class="hicons">
@@ -340,8 +339,8 @@ body.mode-old .old-only.blk{display:block}
 <main class="wrap">
   <!-- ВЫДАЧА -->
   <section class="view on" id="vList">
-    <div class="crumbs"><span>Электроника</span><i class="dot"></i><span>Аксессуары для электроники</span><i class="dot"></i><span>Аксессуары для кабелей</span></div>
-    <div class="res-h"><h1>органайзер для проводов</h1><span id="resCnt"></span></div>
+    <div class="crumbs"><span>Электроника</span><i class="dot"></i><span>Наушники и аудиотехника</span><i class="dot"></i><span>Наушники</span></div>
+    <div class="res-h"><h1>наушники беспроводные</h1><span id="resCnt"></span></div>
     <div class="chips">
       <button class="chip" id="f7">Доставка: до 7 дней</button>
       <button class="chip new-only" id="fRu">Только из России</button>
@@ -354,7 +353,7 @@ body.mode-old .old-only.blk{display:block}
 
   <!-- КАРТОЧКА -->
   <section class="view" id="vPdp">
-    <div class="crumbs"><button class="back" data-go="list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg>К результатам</button><i class="dot"></i><span>Кабели и переходники</span><i class="dot"></i><span>Аксессуары для кабелей</span></div>
+    <div class="crumbs"><button class="back" data-go="list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg>К результатам</button><i class="dot"></i><span>Наушники и аудиотехника</span><i class="dot"></i><span>Наушники</span></div>
     <div class="pdp">
       <div class="gal">
         <div class="thumbs" id="thumbs"></div>
@@ -448,32 +447,28 @@ body.mode-old .old-only.blk{display:block}
 
 <script>
 /* ---------- Иллюстрации (SVG) ---------- */
-function holder(c, hole, holes){c=c||'#fff';holes=holes||1;let h='';const w=holes>1?140:110;const x0=(160-w)/2;
-  for(let i=0;i<holes;i++){const cx=x0+ (w/(holes))*(i+.5);h+=`<rect x="${cx-7}" y="58" width="14" height="40" rx="7" fill="${hole}"/>`}
-  return `<svg viewBox="0 0 160 160"><ellipse cx="80" cy="140" rx="${w/2}" ry="8" fill="rgba(0,26,52,.08)"/><rect x="${x0}" y="46" width="${w}" height="88" rx="26" fill="${c}" stroke="rgba(0,26,52,.08)"/><rect x="${x0+8}" y="52" width="${w-16}" height="20" rx="10" fill="rgba(255,255,255,.55)"/>${h}</svg>`}
-function paw(c){return `<svg viewBox="0 0 160 160"><ellipse cx="80" cy="142" rx="52" ry="8" fill="rgba(0,26,52,.08)"/><ellipse cx="80" cy="100" rx="40" ry="34" fill="${c}"/><circle cx="44" cy="58" r="14" fill="${c}"/><circle cx="68" cy="42" r="14" fill="${c}"/><circle cx="94" cy="42" r="14" fill="${c}"/><circle cx="118" cy="58" r="14" fill="${c}"/><rect x="62" y="90" width="10" height="26" rx="5" fill="rgba(0,26,52,.18)"/><rect x="88" y="90" width="10" height="26" rx="5" fill="rgba(0,26,52,.18)"/></svg>`}
-function strap(c){return `<svg viewBox="0 0 160 160"><ellipse cx="80" cy="142" rx="54" ry="8" fill="rgba(0,26,52,.08)"/><rect x="24" y="64" width="112" height="36" rx="18" fill="${c}"/><rect x="34" y="72" width="64" height="20" rx="10" fill="rgba(255,255,255,.35)"/><circle cx="116" cy="82" r="10" fill="rgba(0,26,52,.2)"/></svg>`}
-function box(c){return `<svg viewBox="0 0 160 160"><ellipse cx="80" cy="142" rx="56" ry="8" fill="rgba(0,26,52,.08)"/><rect x="28" y="40" width="104" height="96" rx="20" fill="${c}"/><rect x="40" y="56" width="22" height="66" rx="8" fill="rgba(255,255,255,.6)"/><rect x="69" y="56" width="22" height="66" rx="8" fill="rgba(255,255,255,.6)"/><rect x="98" y="56" width="22" height="66" rx="8" fill="rgba(255,255,255,.6)"/></svg>`}
-const illRoute=`<svg viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb" x1="0" x2="1"><stop offset="0" stop-color="#005BFF" stop-opacity=".18"/><stop offset="1" stop-color="#005BFF" stop-opacity=".02"/></linearGradient></defs><rect width="520" height="170" fill="#F5F7FA"/><path d="M70 120 C 170 20, 340 20, 450 112" stroke="#005BFF" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" fill="none"/><circle cx="70" cy="122" r="34" fill="url(#gb)"/><circle cx="70" cy="122" r="16" fill="#fff"/><text x="70" y="127" text-anchor="middle" font-family="Onest,Arial" font-size="13" font-weight="700" fill="#C26A00">CN</text><circle cx="450" cy="114" r="34" fill="url(#gb)"/><circle cx="450" cy="114" r="16" fill="#fff"/><text x="450" y="119" text-anchor="middle" font-family="Onest,Arial" font-size="13" font-weight="700" fill="#00A042">RU</text><g transform="translate(244 30) rotate(14)"><path d="M0 18 L46 6 Q56 4 56 12 Q56 18 46 20 L0 26 Z" fill="#005BFF"/><path d="M18 14 L30 -8 L38 -6 L32 16 Z" fill="#3C7CFF"/><path d="M20 24 L30 44 L38 42 L32 22 Z" fill="#3C7CFF"/><path d="M0 18 L-8 6 L-2 6 L8 17 Z" fill="#3C7CFF"/></g><g transform="translate(206 104)"><rect width="108" height="44" rx="14" fill="#fff"/><text x="54" y="20" text-anchor="middle" font-family="Onest,Arial" font-size="12" fill="#5A6878">в пути</text><text x="54" y="36" text-anchor="middle" font-family="Onest,Arial" font-size="15" font-weight="700" fill="#001A34">14 дней</text></g></svg>`;
+const U='https://images.unsplash.com/photo-';
+function photo(id,alt,w){return `<img src="${U}${id}?w=${w||600}&h=${Math.round((w||600)*4/3)}&fit=crop&q=80&auto=format" alt="${(alt||'').replace(/"/g,'')}" loading="lazy" decoding="async">`}
+const illRoute=`<svg viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb" x1="0" x2="1"><stop offset="0" stop-color="#005BFF" stop-opacity=".18"/><stop offset="1" stop-color="#005BFF" stop-opacity=".02"/></linearGradient></defs><rect width="520" height="170" fill="#F5F7FA"/><path d="M70 120 C 170 20, 340 20, 450 112" stroke="#005BFF" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" fill="none"/><circle cx="70" cy="122" r="34" fill="url(#gb)"/><circle cx="70" cy="122" r="16" fill="#fff"/><text x="70" y="127" text-anchor="middle" font-family="Onest,Arial" font-size="13" font-weight="700" fill="#005BFF">CN</text><circle cx="450" cy="114" r="34" fill="url(#gb)"/><circle cx="450" cy="114" r="16" fill="#fff"/><text x="450" y="119" text-anchor="middle" font-family="Onest,Arial" font-size="13" font-weight="700" fill="#00A042">RU</text><g transform="translate(244 30) rotate(14)"><path d="M0 18 L46 6 Q56 4 56 12 Q56 18 46 20 L0 26 Z" fill="#005BFF"/><path d="M18 14 L30 -8 L38 -6 L32 16 Z" fill="#3C7CFF"/><path d="M20 24 L30 44 L38 42 L32 22 Z" fill="#3C7CFF"/><path d="M0 18 L-8 6 L-2 6 L8 17 Z" fill="#3C7CFF"/></g><g transform="translate(206 104)"><rect width="108" height="44" rx="14" fill="#fff"/><text x="54" y="20" text-anchor="middle" font-family="Onest,Arial" font-size="12" fill="#5A6878">в пути</text><text x="54" y="36" text-anchor="middle" font-family="Onest,Arial" font-size="15" font-weight="700" fill="#001A34">14 дней</text></g></svg>`;
 const illEmpty=`<svg viewBox="0 0 200 120"><rect x="0" y="0" width="200" height="120" rx="16" fill="#F5F7FA"/><rect x="60" y="34" width="64" height="58" rx="14" fill="#E3EAF5"/><path d="M60 52h64" stroke="#C9D5E6" stroke-width="3"/><rect x="84" y="34" width="16" height="22" fill="#C9D5E6"/><circle cx="136" cy="44" r="20" fill="#fff"/><circle cx="136" cy="44" r="12" fill="none" stroke="#005BFF" stroke-width="2.5"/><path d="M124 44h24M136 32c-6 7-6 17 0 24M136 32c6 7 6 17 0 24" stroke="#005BFF" stroke-width="2" fill="none"/></svg>`;
 
 /* ---------- Данные (вымышленные, даты от 10 октября) ---------- */
 const P={
- p1:{t:'Держатель для проводов, органайзер для кабелей, самоклеящийся, 5 отверстий, белый',p:57,o:223,r:0,n:0,cross:true,from:'Китай, Шанхай',fromS:'Со склада продавца, Shanghai',days:14,date:'24 октября',seller:'Mavelle',art:'3895873768',img:()=>holder('#FFFFFF','#DCE3EC',5),alts:['a1','a2','a3'],ret:'Можно вернуть в течение 15 дней',
-     props:[['Тип','Держатель для кабеля'],['Количество в упаковке','1 шт'],['Цвет','Белый'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
- a1:{t:'Держатель для кабелей самоклеящийся, 5 разъёмов, белый',p:89,o:299,r:4.9,n:1425,cross:false,from:'Склад Ozon, Москва',fromS:'Со склада Ozon, Москва',days:1,date:'Завтра',dateL:'завтра, 11 октября',seller:'Кабель Хаус',art:'1278894410',img:()=>holder('#FFFFFF','#CBD5E1',5),ret:'Можно вернуть в течение 7 дней',
-     props:[['Тип','Держатель для кабеля'],['Количество в упаковке','1 шт'],['Цвет','Белый'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
- a2:{t:'Органайзер для кабелей на стол, 5 слотов, с клеевой основой',p:74,o:249,r:4.8,n:232,cross:false,from:'Склад продавца, Подольск',fromS:'Со склада продавца, Подольск',days:2,date:'Послезавтра',dateL:'послезавтра, 12 октября',seller:'Порядок Дома',art:'2095561873',img:()=>holder('#E9EDF2','#B9C4D2',5),ret:'Можно вернуть в течение 7 дней',
-     props:[['Тип','Органайзер для кабеля'],['Количество в упаковке','1 шт'],['Цвет','Серый'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
- a3:{t:'Держатель для проводов, 3 отверстия, чёрный, набор 2 шт',p:67,o:379,r:4.9,n:544,cross:false,from:'Склад Ozon, Казань',fromS:'Со склада Ozon, Казань',days:3,date:'13 октября',dateL:'13 октября',seller:'ОРТ',art:'1850007342',img:()=>holder('#2B3440','#111820',3),ret:'Можно вернуть в течение 7 дней',
-     props:[['Тип','Держатель для кабеля'],['Количество в упаковке','2 шт'],['Цвет','Чёрный'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
- p2:{t:'Держатель для проводов настенный, силиконовый, «кошачья лапка», розовый',p:64,o:262,r:0,n:0,cross:true,from:'Китай, Иу',fromS:'Со склада продавца, Yiwu',days:16,date:'26 октября',seller:'MeowHome',art:'4012237765',img:()=>paw('#FFC4DA'),alts:[],ret:'Можно вернуть в течение 15 дней',
-     props:[['Тип','Держатель для кабеля'],['Количество в упаковке','1 шт'],['Цвет','Розовый'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
- l1:{t:'Хомут-липучка многоразовая для проводов, 150 мм, 10 шт',p:58,o:462,r:4.9,n:1078,cross:false,days:3,date:'13 октября',img:()=>strap('#7BC86C')},
- l2:{t:'Органайзер для проводов, магнитный, 6 слотов',p:69,o:229,r:5.0,n:7,cross:true,days:16,date:'26 октября',img:()=>holder('#3A4452','#1E2530',4)},
- l3:{t:'Контейнер для хранения вилок и зарядок, 3 секции',p:71,o:0,r:4.7,n:96,cross:true,days:15,date:'25 октября',img:()=>box('#A8C8FF')},
- l4:{t:'Держатель кабеля под стол, клипсы прозрачные, 20 шт',p:72,o:266,r:4.8,n:61,cross:false,days:1,date:'Завтра',img:()=>strap('#D7E3F3')},
- l5:{t:'Органайзер для флешек и карт памяти, белый',p:73,o:170,r:5.0,n:3,cross:true,days:12,date:'22 октября',img:()=>box('#EEF2F7')},
+ p1:{t:'Наушники беспроводные с шумоподавлением, Bluetooth 5.3, сенсорное управление, белые',p:1290,o:4990,r:0,n:0,cross:true,from:'Китай, Шанхай',fromS:'Со склада продавца, Shanghai',days:14,date:'24 октября',seller:'Mavelle',art:'3895873768',ph:['1755182529034-189a6051faae','1778577528570-2963c48fd5ac'],alts:['a1','a2','a3'],ret:'Можно вернуть в течение 15 дней',
+     props:[['Тип','TWS-наушники'],['Тип подключения','Bluetooth 5.3'],['Цвет','Белый'],['Время работы','до 6 ч, с кейсом до 24 ч'],['Страна-изготовитель','Китай']]},
+ a1:{t:'Наушники TWS с микрофоном, защита от влаги IPX5, чёрные',p:1590,o:3990,r:4.9,n:1425,cross:false,from:'Склад Ozon, Москва',fromS:'Со склада Ozon, Москва',days:1,date:'Завтра',dateL:'завтра, 11 октября',seller:'Звук Дома',art:'1278894410',ph:['1686165862794-3c2500e4db01'],ret:'Можно вернуть в течение 7 дней',
+     props:[['Тип','TWS-наушники'],['Тип подключения','Bluetooth 5.3'],['Цвет','Чёрный'],['Время работы','до 6 ч, с кейсом до 24 ч'],['Страна-изготовитель','Китай']]},
+ a2:{t:'Наушники беспроводные с кейсом-индикатором, голубые',p:1450,o:3490,r:4.8,n:232,cross:false,from:'Склад продавца, Подольск',fromS:'Со склада продавца, Подольск',days:2,date:'Послезавтра',dateL:'послезавтра, 12 октября',seller:'Гаджет Маркет',art:'2095561873',ph:['1640643639986-c0bbc3634637'],ret:'Можно вернуть в течение 7 дней',
+     props:[['Тип','TWS-наушники'],['Тип подключения','Bluetooth 5.3'],['Цвет','Голубой'],['Время работы','до 6 ч, с кейсом до 24 ч'],['Страна-изготовитель','Китай']]},
+ a3:{t:'Наушники-вкладыши спортивные с креплением, чёрные',p:1390,o:2990,r:4.9,n:544,cross:false,from:'Склад Ozon, Казань',fromS:'Со склада Ozon, Казань',days:3,date:'13 октября',dateL:'13 октября',seller:'ОРТ',art:'1850007342',ph:['1606951175543-f39defbbc90e'],ret:'Можно вернуть в течение 7 дней',
+     props:[['Тип','Наушники-вкладыши'],['Тип подключения','Bluetooth 5.3'],['Цвет','Чёрный'],['Время работы','до 6 ч, с кейсом до 24 ч'],['Страна-изготовитель','Китай']]},
+ p2:{t:'Наушники полноразмерные беспроводные, мягкие амбушюры, шалфейно-зелёные',p:2490,o:6990,r:0,n:0,cross:true,from:'Китай, Иу',fromS:'Со склада продавца, Yiwu',days:16,date:'26 октября',seller:'SoftTone',art:'4012237765',ph:['1693621947585-7b7d94149af4'],alts:[],ret:'Можно вернуть в течение 15 дней',
+     props:[['Тип','Полноразмерные'],['Тип подключения','Bluetooth 5.3'],['Цвет','Шалфейно-зелёный'],['Время работы','до 40 ч'],['Страна-изготовитель','Китай']]},
+ l1:{t:'Наушники накладные беспроводные, складные, чёрные',p:3490,o:5990,r:4.9,n:1078,cross:false,days:3,date:'13 октября',ph:['1641048930621-ab5d225ae5b0']},
+ l2:{t:'Наушники полноразмерные с шумоподавлением, 40 ч работы, графит',p:2190,o:7490,r:5.0,n:7,cross:true,days:16,date:'26 октября',ph:['1618366712010-f4ae9c647dcb']},
+ l3:{t:'Наушники беспроводные накладные, басовые, чёрные',p:2790,o:5490,r:4.7,n:96,cross:true,days:15,date:'25 октября',ph:['1505740106531-4243f3831c78']},
+ l4:{t:'Наушники проводные мониторные, 3,5 мм, чёрно-серебристые',p:990,o:1990,r:4.8,n:61,cross:false,days:1,date:'Завтра',ph:['1583394838336-acd977736f90']},
+ l5:{t:'Наушники игровые беспроводные, низкая задержка, чёрные',p:1990,o:4990,r:5.0,n:3,cross:true,days:12,date:'22 октября',ph:['1599669454699-248893623440']},
 };
 const listOrder=['p1','a1','l2','a2','l1','p2','a3','l3','l4','l5'];
 
@@ -482,7 +477,7 @@ const S={mode:'new',view:'list',cur:'p1',origin:'p1',f7:false,fRu:false,cart:{},
 const $=s=>document.querySelector(s);
 const fmt=n=>n.toLocaleString('ru-RU').replace(/ /g,' ')+' ₽';
 const star='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.3l-5.6 2.9 1.1-6.3L2.9 9.5l6.3-.9z"/></svg>';
-const plane='<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0v5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z"/></svg>';
+const planeIc=sz=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>`;const plane=planeIc(13);
 function weeks(d){return d>=14?Math.round(d/7)+' нед.':d+' дн.'}
 function dWord(n){const a=n%10,b=n%100;if(a===1&&b!==11)return 'день';if(a>=2&&a<=4&&(b<12||b>14))return 'дня';return 'дней'}
 function revWord(n){const a=n%10,b=n%100;if(a===1&&b!==11)return 'отзыв';if(a>=2&&a<=4&&(b<12||b>14))return 'отзыва';return 'отзывов'}
@@ -493,7 +488,7 @@ function renderList(){
   let items=listOrder.map(id=>({id,...P[id]}));
   if(S.f7) items=items.filter(x=> old ? true : x.days<=7); // сейчас: фильтр пропускает товары из Китая
   if(S.fRu && !old) items=items.filter(x=>!x.cross);
-  $('#resCnt').textContent=items.length+' '+(items.length===1?'товар':items.length<5?'товара':'товаров')+' из 12 400';
+  $('#resCnt').textContent=items.length+' '+(items.length===1?'товар':items.length<5?'товара':'товаров')+' из 48 200';
   const h=$('#fHint');
   if(S.f7&&old){h.hidden=false;h.className='filter-hint bad';h.innerHTML='Сейчас в фильтр «до 7 дней» попадают товары из Китая со сроком 2-3 недели (так пишут покупатели в отзывах)';}
   else if(S.f7&&!old){h.hidden=false;h.className='filter-hint';const k=listOrder.filter(id=>P[id].days>7).length;h.innerHTML='Скрыли '+k+' '+(k%10>=2&&k%10<=4&&(k%100<12||k%100>14)?'товара':k%10===1&&k%100!==11?'товар':'товаров')+' с доставкой дольше 7 дней, в том числе из-за рубежа';}
@@ -502,7 +497,7 @@ function renderList(){
     const far=x.cross&&!old;
     const disc=x.o?Math.round((1-x.p/x.o)*100):0;
     return `<article class="tile${far?' far':''}" data-id="${x.id}" tabindex="0" aria-label="${x.t}">
-      <div class="ph">${x.img()}${far?`<span class="badge-abroad">${plane}Из-за рубежа</span>`:''}<span class="fav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7.5-4.9-7.5-10.3A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.7C19.5 15.1 12 20 12 20z"/></svg></span></div>
+      <div class="ph">${photo(x.ph[0],x.t,400)}${far?`<span class="badge-abroad">${plane}Из-за рубежа</span>`:''}<span class="fav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7.5-4.9-7.5-10.3A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.7C19.5 15.1 12 20 12 20z"/></svg></span></div>
       <div class="prc"><b>${fmt(x.p)}</b>${x.o?`<s>${fmt(x.o)}</s><em>−${disc}%</em>`:''}</div>
       <div class="nm">${x.t}</div>
       <div class="rt">${x.n?star+' '+x.r.toFixed(1)+' · '+x.n.toLocaleString('ru-RU').replace(/ /g,' ')+' '+revWord(x.n):'<span style="color:var(--text-3)">Нет отзывов</span>'}</div>
@@ -517,19 +512,20 @@ function renderList(){
 
 /* ---------- Карточка ---------- */
 function renderPdp(){
-  const x=P[S.cur], old=S.mode==='old';
+  const x=P[S.cur], old=S.mode==='old'; if(S.thumbFor!==S.cur){S.thumb=0;S.thumbFor=S.cur}
   $('#pTitle').textContent=x.t;
   $('#pRating').innerHTML=x.n?`<span style="color:var(--star);display:flex">${star}</span> ${x.r.toFixed(1)} · ${x.n.toLocaleString('ru-RU').replace(/ /g,' ')} ${revWord(x.n)}`:`<span style="color:var(--text-3);display:flex">${star}</span> Нет отзывов`;
   $('#pArt').textContent='Артикул: '+x.art;
   $('#pProps').innerHTML=x.props.map(p=>`<div>${p[0]}</div><div>${p[1]}</div>`).join('');
-  $('#pDescr').innerHTML=`<p>Держит зарядки и провода на месте: кабель не падает со стола и не путается. Крепится на клеевую основу к столу, стене или тумбе.</p><p>Продавец: ${x.seller}. Магазин отправляет заказы ${x.cross?'из-за рубежа':'со склада в России'}.</p>`;
-  $('#mainph').innerHTML=x.img()+`<span class="lbl">Похожие</span><span class="pick"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21h4V10H2zm20-10c0-1.1-.9-2-2-2h-6.3l1-4.6v-.3c0-.4-.2-.8-.4-1.1L13.2 2 7 8.6V21h11c.8 0 1.5-.5 1.8-1.2l3-7.1c.1-.2.1-.5.1-.7z"/></svg>Цена что надо</span>`;
-  $('#thumbs').innerHTML=[0,1,2,3].map(i=>`<button class="${i?'':'on'}" aria-label="Фото ${i+1}">${x.img()}</button>`).join('');
+  $('#pDescr').innerHTML=`<p>Лёгкие наушники для звонков, музыки и тренировок. Сенсорное управление, быстрое подключение к телефону, кейс заряжается по USB-C.</p><p>Продавец: ${x.seller}. Магазин отправляет заказы ${x.cross?'из-за рубежа':'со склада в России'}.</p>`;
+  $('#mainph').innerHTML=photo(x.ph[S.thumb||0]||x.ph[0],x.t,800)+`<span class="lbl">Похожие</span><span class="pick"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21h4V10H2zm20-10c0-1.1-.9-2-2-2h-6.3l1-4.6v-.3c0-.4-.2-.8-.4-1.1L13.2 2 7 8.6V21h11c.8 0 1.5-.5 1.8-1.2l3-7.1c.1-.2.1-.5.1-.7z"/></svg>Цена что надо</span>`;
+  $('#thumbs').innerHTML=x.ph.map((id,i)=>`<button class="${i===(S.thumb||0)?'on':''}" data-th="${i}" aria-label="Фото ${i+1}">${photo(id,'',120)}</button>`).join('');
+  $('#thumbs').querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{S.thumb=+b.dataset.th;renderPdp()});
   $('#pPrice').textContent=fmt(x.p); $('#pPrice2').textContent=fmt(Math.round(x.p*1.05)); $('#pOld').textContent=x.o?fmt(x.o):'';
   $('#pLater').textContent='без % до 28 декабря';
   // полоса «Откуда и когда»
   const o=$('#origin');
-  if(x.cross){o.className='origin far';o.innerHTML=`<span class="ic">${plane.replace(/13/g,'22')}</span><div><div class="t1">Едет из-за рубежа</div><div class="t2">${x.from} · приедет ${x.date}</div></div><div class="days"><b>${x.days} ${dWord(x.days)}</b><span>в пути</span></div>`;}
+  if(x.cross){o.className='origin far';o.innerHTML=`<span class="ic">${planeIc(22)}</span><div><div class="t1">Едет из-за рубежа</div><div class="t2">${x.from} · приедет ${x.date}</div></div><div class="days"><b>${x.days} ${dWord(x.days)}</b><span>в пути</span></div>`;}
   else{o.className='origin near';o.innerHTML=`<span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="2" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="17.5" r="2" fill="#fff" stroke="currentColor" stroke-width="2"/></svg></span><div><div class="t1">Со склада в России</div><div class="t2">${x.from} · оплата при получении</div></div><div class="days"><b>${x.date}</b><span>${x.days} ${dWord(x.days)}</span></div>`;}
   $('#terms').style.display=x.cross?'block':'none';
   // кнопка
@@ -565,7 +561,7 @@ function renderAlts(){
   }
   box.style.display=S.mode==='old'?'none':'block';
   if(!x.alts.length){
-    box.innerHTML=`<h4>Не хотите ждать ${x.days} ${dWord(x.days)}?</h4><div class="alt-empty">${illEmpty}<b>Быстрее аналогов нет</b><span>Такой держатель сейчас продают только продавцы из-за рубежа. Сообщим, если похожий появится на складе в России.</span><button class="btn-s" id="notifyBtn">Сообщить о появлении</button></div>`;
+    box.innerHTML=`<h4>Не хотите ждать ${x.days} ${dWord(x.days)}?</h4><div class="alt-empty">${illEmpty}<b>Быстрее аналогов нет</b><span>Такую модель сейчас продают только продавцы из-за рубежа. Сообщим, если похожий появится на складе в России.</span><button class="btn-s" id="notifyBtn">Сообщить о появлении</button></div>`;
     $('#notifyBtn').onclick=e=>{e.target.textContent='Подписка оформлена';e.target.classList.add('light');toast('Пришлём уведомление, когда появится аналог из России')};
     return;
   }
@@ -573,7 +569,7 @@ function renderAlts(){
   box.innerHTML=`<h4>Не хотите ждать ${x.days} ${dWord(x.days)}?</h4><div class="sub2">Похожие товары со складов в России</div>
    <div class="seg"><button data-s="fast" class="${S.altSort==='fast'?'on':''}">Быстрее всего</button><button data-s="cheap" class="${S.altSort==='cheap'?'on':''}">Дешевле всего</button></div>
    <div class="alt-list">${list.map(id=>{const a=P[id];const d=a.p-x.p;const save=x.days-a.days;return `<div class="alt">
-     <div class="th">${a.img()}</div>
+     <div class="th">${photo(a.ph[0],a.t,120)}</div>
      <div><div class="an">${a.t}</div><div class="am"><span class="dpill">${a.date}</span><span class="rt">${star} ${a.r.toFixed(1)}</span></div></div>
      <div class="ar"><b>${fmt(a.p)}</b><small>+${d} ₽ · на ${save} ${dWord(save)} раньше</small><button class="btn-s" data-pick="${id}">Выбрать</button></div>
    </div>`}).join('')}</div>`;
@@ -596,7 +592,7 @@ function openAbroad(){const x=P[S.cur];
   $('#abIll').innerHTML=illRoute.replace('14 дней',x.days+' '+dWord(x.days)).replace('>CN<','>CN<');
   $('#abH').textContent='Этот товар едет из Китая';
   $('#abDate').textContent=x.date;
-  $('#abSum').innerHTML=`<span class="th">${x.img()}</span><div><b>${fmt(x.p)} · предоплата</b><span>${x.from} · отменить можно до сборки заказа</span></div>`;
+  $('#abSum').innerHTML=`<span class="th">${photo(x.ph[0],x.t,120)}</span><div><b>${fmt(x.p)} · предоплата</b><span>${x.from} · отменить можно до сборки заказа</span></div>`;
   $('#abFast').style.display=x.alts&&x.alts.length?'block':'none';
   open('#ovAbout',false);open('#ovAbroad',true);}
 
