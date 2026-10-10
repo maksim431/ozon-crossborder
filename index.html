@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ozon · Откуда и когда (концепт)</title>
+<meta name="description" content="Концепт блока «Откуда и когда» в карточке товара Ozon: честный срок и условия заказа из-за рубежа до оплаты. UX/UI: Максим Кощеев.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Токены сняты с ozon.ru (computed styles карточки товара) */
+  --blue:#005BFF; --blue-hover:#0050E0; --blue-light:rgba(55,175,255,.1); --blue-light-2:rgba(0,91,255,.08);
+  --text:#001A34; --heading:#070707; --text-2:rgba(0,26,51,.6); --text-3:#99A3AE;
+  --chip:rgba(0,48,120,.04); --chip-2:rgba(0,48,120,.07); --bg-gray:#F5F7FA; --white:#fff;
+  --pink:#F1117E; --green:#00C451; --green-dark:#00A042; --green-bg:rgba(0,196,81,.12);
+  --purple:#5B51DE; --star:#FFA800;
+  /* выведено из палитры для статуса «едет издалека» */
+  --amber:#C26A00; --amber-bg:rgba(255,149,0,.12);
+  --shadow:0 13px 16px rgba(0,26,52,.1); --shadow-s:0 4px 12px rgba(0,26,52,.08);
+  --r-s:8px; --r-m:12px; --r-l:16px; --r-xl:22px;
+  --font:'Onest','Ozon Sans',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);font-size:14px;line-height:18px;color:var(--text);background:var(--white);overflow-x:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+svg{display:block;flex-shrink:0}
+.wrap{max-width:1400px;margin:0 auto;padding:0 24px}
+
+/* ===== Шапка как на ozon.ru ===== */
+.hdr{position:sticky;top:0;z-index:30;background:var(--white)}
+.hdr-row{display:flex;align-items:center;gap:16px;height:76px}
+.logo{display:flex;align-items:center;gap:8px}
+.logo b{font-size:32px;font-weight:800;letter-spacing:-.5px;color:var(--blue);line-height:1}
+.logo i{font-style:normal;font-size:11px;font-weight:600;color:var(--text-2);background:var(--chip-2);padding:3px 7px;border-radius:6px}
+.btn-cat{display:flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:var(--r-m);background:var(--blue);color:#fff;font-weight:500}
+.btn-cat:hover{background:var(--blue-hover)}
+.search{flex:1;display:flex;align-items:center;height:44px;border:2px solid var(--blue);border-radius:var(--r-m);overflow:hidden;min-width:0}
+.search .scope{display:flex;align-items:center;gap:4px;height:30px;margin-left:6px;padding:0 8px;border-radius:var(--r-s);background:var(--chip-2);font-size:13px;color:var(--text-2);white-space:nowrap}
+.search input{flex:1;border:0;outline:0;font:inherit;font-size:16px;padding:0 10px;color:var(--heading);min-width:0;background:transparent}
+.search .go{width:52px;height:100%;display:grid;place-items:center;background:var(--blue);color:#fff}
+.hicons{display:flex;gap:6px}
+.hicon{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;color:var(--text);padding:4px 8px;position:relative}
+.hicon svg{color:var(--text-3)}
+.hicon .cnt{position:absolute;top:0;right:10px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--pink);color:#fff;font-size:11px;font-weight:700;line-height:18px;text-align:center;display:none}
+.hicon .cnt.on{display:block}
+.sub{display:flex;gap:20px;height:30px;align-items:center;font-size:13px;color:var(--text);overflow:hidden;white-space:nowrap}
+.sub span:first-child{color:#10A37F;font-weight:500}
+
+/* ===== Полоса концепта ===== */
+.cbar{background:var(--bg-gray)}
+.cbar .wrap{display:flex;align-items:center;gap:12px;min-height:52px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+.cbar-note{font-size:13px;color:var(--text-2);flex:1;min-width:200px}
+.cbar-note b{color:var(--text);font-weight:600}
+.seg{display:flex;background:var(--chip-2);border-radius:var(--r-m);padding:3px}
+.seg button{height:34px;padding:0 14px;border-radius:9px;font-size:13px;font-weight:500;color:var(--text-2)}
+.seg button.on{background:#fff;color:var(--heading);box-shadow:var(--shadow-s)}
+.btn-ghost{height:40px;padding:0 14px;border-radius:var(--r-m);background:var(--blue-light);color:var(--blue);font-weight:500;font-size:13px;display:flex;align-items:center;gap:6px}
+.btn-ghost:hover{background:rgba(55,175,255,.18)}
+
+/* ===== Выдача ===== */
+.view{display:none}.view.on{display:block}
+.crumbs{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--text-2);padding:20px 0 12px;flex-wrap:wrap}
+.crumbs .dot{width:3px;height:3px;border-radius:50%;background:var(--text-3)}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--blue);font-weight:500}
+.res-h{display:flex;align-items:baseline;gap:10px;margin:6px 0 16px;flex-wrap:wrap}
+.res-h h1{font-size:28px;line-height:34px;font-weight:700;color:var(--heading)}
+.res-h span{color:var(--text-3);font-size:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{height:36px;padding:0 14px;border-radius:var(--r-m);background:var(--chip-2);font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;color:var(--text)}
+.chip:hover{background:rgba(0,48,120,.11)}
+.chip.on{background:var(--blue);color:#fff}
+.chip .x{opacity:.8}
+.filter-hint{font-size:13px;color:var(--text-2);margin:-8px 0 18px;display:flex;align-items:center;gap:8px}
+.filter-hint.bad{color:var(--pink)}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px 16px;padding-bottom:64px}
+.tile{display:flex;flex-direction:column;gap:6px;cursor:pointer;min-width:0}
+.tile .ph{position:relative;aspect-ratio:3/4;border-radius:var(--r-m);background:var(--bg-gray);display:grid;place-items:center;overflow:hidden}
+.tile .ph svg{width:72%;height:auto}
+.tile:hover .ph{background:#EEF1F6}
+.tile .fav{position:absolute;top:8px;right:8px;width:32px;height:32px;display:grid;place-items:center;color:var(--text-3)}
+.badge-abroad{position:absolute;left:8px;top:8px;display:flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:var(--r-s);background:rgba(255,255,255,.94);color:var(--amber);font-size:12px;font-weight:600;box-shadow:var(--shadow-s)}
+.tile .prc{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-top:4px}
+.tile .prc b{font-size:20px;line-height:24px;font-weight:700;color:var(--pink)}
+.tile .prc s{color:var(--text-3);font-size:13px}
+.tile .prc em{font-style:normal;color:var(--pink);font-size:13px;font-weight:600}
+.tile .nm{font-size:14px;line-height:18px;color:var(--heading);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rt{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--text-2)}
+.rt svg{color:var(--star)}
+.tile .dbtn{margin-top:auto;height:36px;border-radius:var(--r-m);background:var(--blue);color:#fff;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 10px;white-space:nowrap;overflow:hidden}
+.tile .dbtn small{font-weight:400;opacity:.85;font-size:12px}
+.tile.far .dbtn{background:var(--blue-light);color:var(--blue)}
+.empty-res{grid-column:1/-1;background:var(--bg-gray);border-radius:var(--r-l);padding:40px;text-align:center;color:var(--text-2)}
+
+/* ===== Карточка товара ===== */
+.pdp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 384px;gap:32px;padding-bottom:80px;align-items:start}
+.gal{display:grid;grid-template-columns:56px 1fr;gap:16px}
+.thumbs{display:flex;flex-direction:column;gap:8px}
+.thumbs button{width:56px;height:72px;border-radius:var(--r-s);background:var(--bg-gray);display:grid;place-items:center;outline:2px solid transparent;outline-offset:-2px}
+.thumbs button.on{outline-color:var(--blue)}
+.thumbs svg{width:40px;height:auto}
+.mainph{position:relative;aspect-ratio:3/4;border-radius:var(--r-l);background:var(--bg-gray);display:grid;place-items:center}
+.mainph>svg{width:66%;height:auto}
+.mainph .lbl{position:absolute;top:12px;left:12px;height:30px;padding:0 10px;border-radius:var(--r-s);background:#fff;font-size:13px;font-weight:500;display:flex;align-items:center;box-shadow:var(--shadow-s)}
+.mainph .pick{position:absolute;top:12px;right:12px;height:28px;padding:0 10px;border-radius:var(--r-s);background:var(--green-bg);color:var(--green-dark);font-size:13px;font-weight:500;display:flex;align-items:center;gap:4px}
+.info h1{font-size:24px;line-height:30px;font-weight:700;color:var(--heading);margin-bottom:12px}
+.info .meta{display:flex;gap:16px;align-items:center;margin-bottom:24px;color:var(--text-2);font-size:14px;flex-wrap:wrap}
+.info .meta span{display:flex;gap:6px;align-items:center}
+.info h3{font-size:18px;font-weight:700;color:var(--heading);margin-bottom:12px}
+.props{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.props div{padding:10px 0;font-size:14px}
+.props div:nth-child(odd){color:var(--text-2)}
+.props div{border-bottom:1px solid rgba(0,26,52,.06)}
+.descr{margin-top:28px;font-size:14px;line-height:21px;color:var(--text)}
+.descr p+p{margin-top:10px}
+
+.buycol{position:sticky;top:96px;display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border-radius:var(--r-l);box-shadow:var(--shadow);padding:16px}
+.card.flat{box-shadow:none;background:var(--bg-gray)}
+.price-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.price-pill{height:40px;padding:0 10px;border-radius:var(--r-m);background:var(--green);color:#fff;font-size:26px;font-weight:700;display:flex;align-items:center;letter-spacing:-.3px}
+.price-row small{font-size:13px;color:var(--text-2);line-height:16px}
+.price-sub{margin-top:8px;display:flex;gap:8px;align-items:baseline;color:var(--text-2);font-size:13px}
+.price-sub b{color:var(--heading);font-size:16px}
+.price-sub s{color:var(--text-3)}
+.later{margin-top:12px;display:flex;align-items:center;gap:10px;background:var(--chip);border-radius:var(--r-m);padding:8px}
+.later span:first-child{background:var(--purple);color:#fff;border-radius:6px;padding:6px 8px;font-size:13px;font-weight:500}
+.later span:last-child{font-size:13px}
+
+/* НОВОЕ: полоса «Откуда и когда» */
+.origin{margin-top:14px;border-radius:var(--r-m);padding:12px;display:flex;gap:12px;align-items:center}
+.origin .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:#fff}
+.origin .t1{font-weight:600;font-size:15px;line-height:19px;color:var(--heading)}
+.origin .t2{font-size:13px;color:var(--text-2);margin-top:2px}
+.origin .days{margin-left:auto;text-align:right;white-space:nowrap}
+.origin .days b{display:block;font-size:20px;line-height:22px;font-weight:700}
+.origin .days span{font-size:12px;color:var(--text-2)}
+.origin.far{background:var(--amber-bg)}.origin.far .ic,.origin.far .days b{color:var(--amber)}
+.origin.near{background:var(--green-bg)}.origin.near .ic,.origin.near .days b{color:var(--green-dark)}
+.terms{margin-top:8px;border-radius:var(--r-m);background:var(--chip);overflow:hidden}
+.terms-h{width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px;font-weight:600;font-size:14px;color:var(--heading)}
+.terms-h .chev{transition:transform .2s}
+.terms.open .terms-h .chev{transform:rotate(180deg)}
+.terms-b{display:none;padding:0 12px 12px;gap:10px;flex-direction:column}
+.terms.open .terms-b{display:flex}
+.term{display:flex;gap:10px;align-items:flex-start}
+.term .ti{width:28px;height:28px;border-radius:8px;background:#fff;display:grid;place-items:center;color:var(--blue)}
+.term b{display:block;font-size:14px;font-weight:600;color:var(--heading);line-height:18px}
+.term span{font-size:13px;color:var(--text-2);line-height:17px}
+.terms-more{font-size:13px;color:var(--blue);font-weight:500;padding:2px 0 0 38px}
+
+.cta{margin-top:14px;display:flex;gap:8px}
+.btn-main{flex:1;min-height:56px;border-radius:var(--r-l);background:var(--blue);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 16px;transition:background .15s}
+.btn-main:hover{background:var(--blue-hover)}
+.btn-main b{font-size:16px;font-weight:600;line-height:20px}
+.btn-main span{font-size:13px;opacity:.85;line-height:16px}
+.btn-fav{width:56px;border-radius:var(--r-l);background:var(--blue-light);color:var(--blue);display:grid;place-items:center}
+.stepper{flex:1;min-height:56px;border-radius:var(--r-l);background:var(--blue-light);color:var(--blue);display:none;align-items:center;justify-content:space-between;padding:0 8px}
+.stepper.on{display:flex}
+.stepper button{width:40px;height:40px;border-radius:var(--r-m);background:#fff;color:var(--blue);display:grid;place-items:center;font-size:22px;font-weight:500}
+.stepper div{text-align:center}
+.stepper div b{display:block;font-size:16px;font-weight:600}
+.stepper div span{font-size:12px;color:var(--text-2)}
+.btn-buy{margin-top:8px;width:100%;height:48px;border-radius:var(--r-l);background:var(--blue-light);color:var(--blue);font-weight:500;font-size:15px}
+
+/* Старое: «Есть быстрее» */
+.faster-old{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--r-m);background:var(--chip);margin-top:8px;font-size:13px;color:var(--text-2)}
+.faster-old b{color:var(--heading)}
+.faster-old .n{margin-left:auto;color:var(--text-3)}
+
+/* НОВОЕ: сравнение «Ждать или быстрее» */
+.alts h4{font-size:16px;font-weight:700;color:var(--heading);line-height:20px}
+.alts .sub2{font-size:13px;color:var(--text-2);margin-top:4px}
+.alts .seg{margin-top:12px}
+.alts .seg button{flex:1}
+.alt-list{margin-top:10px;display:flex;flex-direction:column}
+.alt{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(0,26,52,.06)}
+.alt:last-child{border-bottom:0}
+.alt .th{width:52px;height:64px;border-radius:var(--r-s);background:var(--bg-gray);display:grid;place-items:center}
+.alt .th svg{width:38px;height:auto}
+.alt .an{font-size:13px;line-height:16px;color:var(--heading);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.alt .am{display:flex;gap:6px;align-items:center;margin-top:5px;flex-wrap:wrap}
+.dpill{height:22px;padding:0 7px;border-radius:6px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;background:var(--green-bg);color:var(--green-dark)}
+.alt .rt{font-size:12px}
+.alt .ar{text-align:right}
+.alt .ar b{display:block;font-size:16px;font-weight:700;color:var(--heading)}
+.alt .ar small{display:block;font-size:12px;color:var(--text-2);margin:1px 0 6px}
+.btn-s{height:32px;padding:0 12px;border-radius:10px;background:var(--blue);color:#fff;font-size:13px;font-weight:600}
+.btn-s:hover{background:var(--blue-hover)}
+.btn-s.light{background:var(--blue-light);color:var(--blue)}
+.alt-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:12px 4px 4px;gap:8px}
+.alt-empty svg{width:150px;height:auto}
+.alt-empty b{font-size:15px;color:var(--heading)}
+.alt-empty span{font-size:13px;color:var(--text-2);line-height:17px}
+.alt-empty .btn-s{margin-top:4px;height:40px;padding:0 16px}
+.back-orig{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2)}
+.back-orig .btn-s{margin-left:auto;white-space:nowrap}
+
+.dl h4{font-size:16px;font-weight:700;color:var(--heading);margin-bottom:6px}
+.dl-row{display:flex;gap:10px;align-items:flex-start;padding:10px 0;font-size:14px}
+.dl-row svg{color:var(--text-3);margin-top:1px}
+.dl-row small{display:block;font-size:12px;color:var(--text-2);margin-top:2px;font-weight:500}
+.dl-row .r{margin-left:auto;font-size:12px;background:var(--chip-2);border-radius:6px;padding:3px 7px;white-space:nowrap}
+.dl-row.lnk{color:var(--text)}
+.dl-row.lnk .r{background:none;color:var(--blue);padding:0}
+
+.new-only{} .old-only{display:none}
+body.mode-old .new-only{display:none!important}
+body.mode-old .old-only{display:flex}
+body.mode-old .old-only.blk{display:block}
+
+/* ===== Модалки, шторки, тосты ===== */
+.ov{position:fixed;inset:0;z-index:60;background:rgba(0,26,52,.45);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+.ov.on{display:flex}
+.modal{background:#fff;border-radius:var(--r-xl);width:100%;max-width:560px;max-height:calc(100vh - 40px);overflow:auto;padding:28px;position:relative;animation:pop .2s ease}
+@keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+.modal .close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;background:var(--chip-2);display:grid;place-items:center;color:var(--text-2)}
+.modal h2{font-size:22px;line-height:28px;font-weight:700;color:var(--heading);padding-right:40px}
+.modal .lead{font-size:14px;color:var(--text-2);margin-top:6px;line-height:20px}
+.mill{border-radius:var(--r-l);background:var(--bg-gray);display:grid;place-items:center;margin-bottom:18px;overflow:hidden}
+.mill svg{width:100%;height:auto;max-height:170px}
+.sumbox{margin-top:16px;border-radius:var(--r-m);background:var(--chip);padding:12px;display:flex;gap:12px;align-items:center}
+.sumbox .th{width:48px;height:60px;border-radius:var(--r-s);background:#fff;display:grid;place-items:center}
+.sumbox .th svg{width:34px;height:auto}
+.sumbox b{font-size:14px;color:var(--heading);display:block}
+.sumbox span{font-size:13px;color:var(--text-2)}
+.opts{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:var(--r-m);background:var(--chip);cursor:pointer;outline:2px solid transparent;outline-offset:-2px}
+.opt.on{outline-color:var(--blue);background:var(--blue-light-2)}
+.opt .rd{width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 2px var(--text-3);flex-shrink:0;margin-top:1px}
+.opt.on .rd{box-shadow:inset 0 0 0 6px var(--blue)}
+.opt b{display:block;font-size:14px;color:var(--heading)}
+.opt span{font-size:13px;color:var(--text-2);line-height:17px}
+.mfoot{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap}
+.btn-l{flex:1;min-width:160px;height:52px;border-radius:var(--r-l);background:var(--blue);color:#fff;font-weight:600;font-size:15px}
+.btn-l:hover{background:var(--blue-hover)}
+.btn-l.light{background:var(--blue-light);color:var(--blue)}
+.about-sec{margin-top:16px}
+.about-sec h5{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+.about-sec p{font-size:14px;line-height:20px;color:var(--text)}
+.about-sec ul{padding-left:18px;font-size:14px;line-height:20px}
+.credit{margin-top:20px;padding:14px;border-radius:var(--r-m);background:var(--chip);font-size:13px;line-height:19px;color:var(--text-2)}
+.credit a{color:var(--blue);font-weight:500}
+.credit b{color:var(--heading)}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:80;background:#1B2A3A;color:#fff;border-radius:var(--r-l);padding:12px 12px 12px 16px;display:flex;align-items:center;gap:12px;font-size:14px;box-shadow:0 10px 30px rgba(0,26,52,.25);opacity:0;pointer-events:none;transition:.2s;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast .ok{width:24px;height:24px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.toast button{color:#8FB8FF;font-weight:600;padding:6px 8px;white-space:nowrap}
+
+.mbar{display:none}
+
+/* ===== Адаптив ===== */
+@media (max-width:1180px){
+  .pdp{grid-template-columns:minmax(0,1fr) 360px}
+  .gal{grid-column:1}.info{grid-column:1}
+  .buycol{grid-row:1/span 2;grid-column:2}
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pdp{display:flex;flex-direction:column;gap:20px}
+  .gal{order:1}.buycol{order:2;position:static}.info{order:3}
+  .hicons .hide-s{display:none}
+  .sub{display:none}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .hdr-row{flex-wrap:wrap;height:auto;padding:10px 0;gap:10px}
+  .logo b{font-size:26px}
+  .btn-cat{display:none}
+  .search{order:3;flex-basis:100%;height:42px}
+  .search .scope{display:none}
+  .hicons{margin-left:auto}
+  .hicon{font-size:0;padding:4px}
+  .hicon .cnt{right:-2px;font-size:11px}
+  .cbar-note{font-size:12px;flex-basis:100%}
+  .seg button{padding:0 10px}
+  .res-h h1{font-size:22px;line-height:28px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 10px}
+  .tile .prc b{font-size:18px}
+  .tile .dbtn{font-size:13px}
+  .tile .dbtn small{display:none}
+  .gal{grid-template-columns:1fr}
+  .thumbs{display:none}
+  .mainph{aspect-ratio:1/1}
+  .info h1{font-size:20px;line-height:26px}
+  .card{padding:14px}
+  .origin .days b{font-size:18px}
+  .modal{padding:22px 18px;border-radius:var(--r-xl) var(--r-xl) 0 0;max-height:92vh}
+  .ov{align-items:flex-end;padding:0}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;box-shadow:0 -6px 20px rgba(0,26,52,.1);padding:10px 16px calc(10px + env(safe-area-inset-bottom));gap:10px;align-items:center}
+  .mbar .mp b{display:block;font-size:20px;font-weight:700;color:var(--green-dark)}
+  .mbar .mp span{font-size:12px;color:var(--text-2)}
+  .mbar .btn-main{min-height:50px;border-radius:var(--r-m)}
+  body.pdp-on{padding-bottom:84px}
+  body:not(.pdp-on) .mbar{display:none}
+  .toast{bottom:96px}
+  body:not(.pdp-on) .toast{bottom:20px}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap">
+    <div class="hdr-row">
+      <a class="logo" href="#" data-go="list" aria-label="Ozon, концепт"><b>OZON</b><i>концепт</i></a>
+      <button class="btn-cat"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2.5"/><rect x="13" y="3" width="8" height="8" rx="2.5"/><rect x="3" y="13" width="8" height="8" rx="2.5"/><rect x="13" y="13" width="8" height="8" rx="2.5"/></svg>Каталог</button>
+      <form class="search" onsubmit="event.preventDefault();go('list')">
+        <span class="scope">Везде <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
+        <input id="q" value="органайзер для проводов" aria-label="Поиск">
+        <button class="go" aria-label="Найти"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+      </form>
+      <nav class="hicons">
+        <a class="hicon hide-s" href="#"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.5"/><path d="M3.5 21c.8-4.4 4.2-7 8.5-7s7.7 2.6 8.5 7z"/></svg>Войти</a>
+        <a class="hicon hide-s" href="#"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M4 7l8-4 8 4v10l-8 4-8-4z"/></svg>Заказы</a>
+        <a class="hicon" href="#"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11z"/></svg>Избранное</a>
+        <a class="hicon" href="#"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h2.4l2.2 11h10.7L21 7H7"/><circle cx="9" cy="19.5" r="1.7"/><circle cx="17" cy="19.5" r="1.7"/></svg>Корзина<span class="cnt" id="cartCnt">0</span></a>
+      </nav>
+    </div>
+    <div class="sub"><span>Ozon fresh</span><span>Ozon Банк</span><span>Билеты, отели</span><span>Для бизнеса</span><span>Зимние коллекции</span><span>Одежда</span><span>Электроника</span><span>Товары за 1 ₽</span></div>
+  </div>
+</header>
+
+<div class="cbar">
+  <div class="wrap">
+    <div class="cbar-note"><b>Концепт «Откуда и когда».</b> Не официальный продукт Ozon, данные вымышлены. Сравните, как сейчас и как могло бы быть.</div>
+    <div class="seg" role="tablist" aria-label="Режим">
+      <button id="mOld" role="tab">Сейчас на Ozon</button>
+      <button id="mNew" class="on" role="tab">С решением</button>
+    </div>
+    <button class="btn-ghost" id="aboutBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>О концепции</button>
+  </div>
+</div>
+
+<main class="wrap">
+  <!-- ВЫДАЧА -->
+  <section class="view on" id="vList">
+    <div class="crumbs"><span>Электроника</span><i class="dot"></i><span>Аксессуары для электроники</span><i class="dot"></i><span>Аксессуары для кабелей</span></div>
+    <div class="res-h"><h1>органайзер для проводов</h1><span id="resCnt"></span></div>
+    <div class="chips">
+      <button class="chip" id="f7">Доставка: до 7 дней</button>
+      <button class="chip new-only" id="fRu">Только из России</button>
+      <button class="chip">Сначала дешёвые <svg width="12" height="12" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></button>
+      <button class="chip">Бренд проверен</button>
+    </div>
+    <div class="filter-hint" id="fHint" hidden></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- КАРТОЧКА -->
+  <section class="view" id="vPdp">
+    <div class="crumbs"><button class="back" data-go="list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg>К результатам</button><i class="dot"></i><span>Кабели и переходники</span><i class="dot"></i><span>Аксессуары для кабелей</span></div>
+    <div class="pdp">
+      <div class="gal">
+        <div class="thumbs" id="thumbs"></div>
+        <div class="mainph" id="mainph"></div>
+      </div>
+      <div class="info">
+        <h1 id="pTitle"></h1>
+        <div class="meta"><span id="pRating"></span><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/></svg>Задать вопрос</span><span id="pArt"></span></div>
+        <h3>О товаре</h3>
+        <div class="props" id="pProps"></div>
+        <div class="descr" id="pDescr"></div>
+      </div>
+
+      <aside class="buycol">
+        <div class="card">
+          <div class="price-row"><span class="price-pill" id="pPrice"></span><small>с Ozon<br>Банком</small></div>
+          <div class="price-sub"><b id="pPrice2"></b><s id="pOld"></s><span>с другими банками</span></div>
+          <div class="later"><span>Оплатить позже</span><span id="pLater"></span></div>
+
+          <div class="new-only" id="originWrap" style="display:block">
+            <div class="origin" id="origin"></div>
+            <div class="terms" id="terms">
+              <button class="terms-h" id="termsH" aria-expanded="false"><span>Что важно знать до оплаты</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></button>
+              <div class="terms-b">
+                <div class="term"><span class="ti"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/></svg></span><div><b>Только предоплата</b><span>Оплата при получении для заказов из-за рубежа недоступна</span></div></div>
+                <div class="term"><span class="ti"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="3" width="14" height="18" rx="3"/><circle cx="12" cy="10" r="2.5"/><path d="M8.5 16h7"/></svg></span><div><b>Паспорт для таможни за 48 часов</b><span>Можно подставить из Госуслуг. Без него заказ отменится</span></div></div>
+                <div class="term"><span class="ti"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b>Отменить можно до сборки</b><span>Обычно это 1-2 дня. Потом только отказ в пункте выдачи</span></div></div>
+                <div class="term"><span class="ti"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg></span><div><b>Возврат через продавца</b><span>Вскрытую посылку можно вернуть за 15 дней с одобрения продавца</span></div></div>
+                <a class="terms-more" href="#" onclick="event.preventDefault();toast('В концепте ссылка ведёт в справку Ozon')">Все условия доставки из-за рубежа</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cta">
+            <button class="btn-main" id="addBtn"><b>В корзину</b><span id="addSub"></span></button>
+            <div class="stepper" id="stepper"><button id="minus" aria-label="Меньше">−</button><div><b id="qty">1 шт</b><span>В корзине</span></div><button id="plus" aria-label="Больше">+</button></div>
+            <button class="btn-fav" aria-label="В избранное"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7.5-4.9-7.5-10.3A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.7C19.5 15.1 12 20 12 20z"/></svg></button>
+          </div>
+          <div class="faster-old old-only" id="fasterOld"></div>
+        </div>
+        <button class="btn-buy old-only blk" style="height:48px">Купить сейчас</button>
+
+        <div class="card alts new-only" id="alts" style="display:block"></div>
+
+        <div class="card dl">
+          <h4>Доставка и возврат</h4>
+          <div class="dl-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><div>Нижний Новгород, Нижегородская область<small id="dlFrom"></small></div></div>
+          <div class="dl-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 7l8-4 8 4v10l-8 4-8-4z"/></svg><div>Пункты выдачи и постаматы<small id="dlDate"></small></div><span class="r">Входит в заказ</span></div>
+          <div class="dl-row lnk old-only" id="dlAbroad"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7.5v.5" stroke="#fff" stroke-width="2.2"/></svg><div>Условия доставки из-за рубежа</div><span class="r">›</span></div>
+          <div class="dl-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg><div id="dlRet"></div></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<div class="mbar" id="mbar"><div class="mp"><b id="mPrice"></b><span id="mDate"></span></div><button class="btn-main" id="mAdd"><b>В корзину</b></button></div>
+
+<!-- Модалка: заказ из-за рубежа -->
+<div class="ov" id="ovAbroad" role="dialog" aria-modal="true" aria-labelledby="abH">
+  <div class="modal">
+    <button class="close" data-close aria-label="Закрыть"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="mill" id="abIll"></div>
+    <h2 id="abH">Этот товар едет из Китая</h2>
+    <p class="lead">Привезём в пункт выдачи <b id="abDate"></b>. Чтобы посылка прошла таможню, после оплаты понадобятся паспортные данные. Как удобнее?</p>
+    <div class="sumbox" id="abSum"></div>
+    <div class="opts" id="abOpts">
+      <div class="opt on" data-v="gu"><span class="rd"></span><div><b>Подставить из Госуслуг после оплаты</b><span>Один шаг, данные сохранятся для следующих заказов из-за рубежа</span></div></div>
+      <div class="opt" data-v="later"><span class="rd"></span><div><b>Ввести вручную позже</b><span>Напомним в приложении. На это будет 48 часов, иначе заказ отменится</span></div></div>
+    </div>
+    <div class="mfoot"><button class="btn-l" id="abOk">Добавить в корзину</button><button class="btn-l light" id="abFast">Посмотреть быстрее</button></div>
+  </div>
+</div>
+
+<!-- Модалка: о концепции -->
+<div class="ov" id="ovAbout" role="dialog" aria-modal="true" aria-labelledby="aboutH">
+  <div class="modal">
+    <button class="close" data-close aria-label="Закрыть"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="mill" id="aboutIll"></div>
+    <h2 id="aboutH">Концепт: «Откуда и когда» в карточке товара</h2>
+    <div class="about-sec"><h5>Проблема</h5><p>Товар из Шанхая в выдаче и на кнопке «В корзину» выглядит как обычный, только дата дальше. Что он едет из-за рубежа, требует предоплаты и паспорта, а отменить его можно лишь до сборки, человек узнаёт после оплаты. Отсюда отмены, невыкупы, обращения «где мой заказ» и негатив в отзывах.</p></div>
+    <div class="about-sec"><h5>Гипотеза</h5><p>Если показать страну, честный срок и четыре главных условия прямо в блоке покупки и рядом предложить быстрый аналог со склада в России, то доля отмен и обращений по заказам из-за рубежа снизится, а конверсия в заказ сохранится за счёт переключения на аналог.</p></div>
+    <div class="about-sec"><h5>Решение</h5><ul><li>Метка «Из-за рубежа» на плитке и честный фильтр «до 7 дней»</li><li>Полоса «Откуда и когда» над кнопкой: страна, дни, дата</li><li>Свёрнутый список «Что важно знать до оплаты»</li><li>Сравнение «Ждать или быстрее» на данных, которые уже есть в «Есть быстрее»</li><li>Шторка про паспорт до корзины, а не после оплаты</li></ul></div>
+    <div class="about-sec"><h5>Как измерить</h5><p>A/B-тест на карточках кросс-бордер товаров: доля отмен и невыкупов, обращения в поддержку по таким заказам, доля заказов с паспортом в первые 48 часов, конверсия карточки в заказ (включая переключение на аналог), оценки приложения.</p></div>
+    <div class="credit"><b>Дизайн: Максим Кощеев</b>, UX/UI и продуктовый дизайнер · <a href="https://portfoliomaksim.framer.website/" target="_blank" rel="noopener">портфолио</a> · <a href="https://t.me/maksim_koshcheev" target="_blank" rel="noopener">@maksim_koshcheev</a><br>Концепт не связан с компанией Ozon, данные вымышлены.</div>
+    <div class="mfoot"><button class="btn-l" data-close>Смотреть прототип</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"><span class="ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span id="toastT"></span><button id="toastA" hidden></button></div>
+
+<script>
+/* ---------- Иллюстрации (SVG) ---------- */
+function holder(c, hole, holes){c=c||'#fff';holes=holes||1;let h='';const w=holes>1?140:110;const x0=(160-w)/2;
+  for(let i=0;i<holes;i++){const cx=x0+ (w/(holes))*(i+.5);h+=`<rect x="${cx-7}" y="58" width="14" height="40" rx="7" fill="${hole}"/>`}
+  return `<svg viewBox="0 0 160 160"><ellipse cx="80" cy="140" rx="${w/2}" ry="8" fill="rgba(0,26,52,.08)"/><rect x="${x0}" y="46" width="${w}" height="88" rx="26" fill="${c}" stroke="rgba(0,26,52,.08)"/><rect x="${x0+8}" y="52" width="${w-16}" height="20" rx="10" fill="rgba(255,255,255,.55)"/>${h}</svg>`}
+function paw(c){return `<svg viewBox="0 0 160 160"><ellipse cx="80" cy="142" rx="52" ry="8" fill="rgba(0,26,52,.08)"/><ellipse cx="80" cy="100" rx="40" ry="34" fill="${c}"/><circle cx="44" cy="58" r="14" fill="${c}"/><circle cx="68" cy="42" r="14" fill="${c}"/><circle cx="94" cy="42" r="14" fill="${c}"/><circle cx="118" cy="58" r="14" fill="${c}"/><rect x="62" y="90" width="10" height="26" rx="5" fill="rgba(0,26,52,.18)"/><rect x="88" y="90" width="10" height="26" rx="5" fill="rgba(0,26,52,.18)"/></svg>`}
+function strap(c){return `<svg viewBox="0 0 160 160"><ellipse cx="80" cy="142" rx="54" ry="8" fill="rgba(0,26,52,.08)"/><rect x="24" y="64" width="112" height="36" rx="18" fill="${c}"/><rect x="34" y="72" width="64" height="20" rx="10" fill="rgba(255,255,255,.35)"/><circle cx="116" cy="82" r="10" fill="rgba(0,26,52,.2)"/></svg>`}
+function box(c){return `<svg viewBox="0 0 160 160"><ellipse cx="80" cy="142" rx="56" ry="8" fill="rgba(0,26,52,.08)"/><rect x="28" y="40" width="104" height="96" rx="20" fill="${c}"/><rect x="40" y="56" width="22" height="66" rx="8" fill="rgba(255,255,255,.6)"/><rect x="69" y="56" width="22" height="66" rx="8" fill="rgba(255,255,255,.6)"/><rect x="98" y="56" width="22" height="66" rx="8" fill="rgba(255,255,255,.6)"/></svg>`}
+const illRoute=`<svg viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb" x1="0" x2="1"><stop offset="0" stop-color="#005BFF" stop-opacity=".18"/><stop offset="1" stop-color="#005BFF" stop-opacity=".02"/></linearGradient></defs><rect width="520" height="170" fill="#F5F7FA"/><path d="M70 120 C 170 20, 340 20, 450 112" stroke="#005BFF" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" fill="none"/><circle cx="70" cy="122" r="34" fill="url(#gb)"/><circle cx="70" cy="122" r="16" fill="#fff"/><text x="70" y="127" text-anchor="middle" font-family="Onest,Arial" font-size="13" font-weight="700" fill="#C26A00">CN</text><circle cx="450" cy="114" r="34" fill="url(#gb)"/><circle cx="450" cy="114" r="16" fill="#fff"/><text x="450" y="119" text-anchor="middle" font-family="Onest,Arial" font-size="13" font-weight="700" fill="#00A042">RU</text><g transform="translate(244 30) rotate(14)"><path d="M0 18 L46 6 Q56 4 56 12 Q56 18 46 20 L0 26 Z" fill="#005BFF"/><path d="M18 14 L30 -8 L38 -6 L32 16 Z" fill="#3C7CFF"/><path d="M20 24 L30 44 L38 42 L32 22 Z" fill="#3C7CFF"/><path d="M0 18 L-8 6 L-2 6 L8 17 Z" fill="#3C7CFF"/></g><g transform="translate(206 104)"><rect width="108" height="44" rx="14" fill="#fff"/><text x="54" y="20" text-anchor="middle" font-family="Onest,Arial" font-size="12" fill="#5A6878">в пути</text><text x="54" y="36" text-anchor="middle" font-family="Onest,Arial" font-size="15" font-weight="700" fill="#001A34">14 дней</text></g></svg>`;
+const illEmpty=`<svg viewBox="0 0 200 120"><rect x="0" y="0" width="200" height="120" rx="16" fill="#F5F7FA"/><rect x="60" y="34" width="64" height="58" rx="14" fill="#E3EAF5"/><path d="M60 52h64" stroke="#C9D5E6" stroke-width="3"/><rect x="84" y="34" width="16" height="22" fill="#C9D5E6"/><circle cx="136" cy="44" r="20" fill="#fff"/><circle cx="136" cy="44" r="12" fill="none" stroke="#005BFF" stroke-width="2.5"/><path d="M124 44h24M136 32c-6 7-6 17 0 24M136 32c6 7 6 17 0 24" stroke="#005BFF" stroke-width="2" fill="none"/></svg>`;
+
+/* ---------- Данные (вымышленные, даты от 10 октября) ---------- */
+const P={
+ p1:{t:'Держатель для проводов, органайзер для кабелей, самоклеящийся, 5 отверстий, белый',p:57,o:223,r:0,n:0,cross:true,from:'Китай, Шанхай',fromS:'Со склада продавца, Shanghai',days:14,date:'24 октября',seller:'Mavelle',art:'3895873768',img:()=>holder('#FFFFFF','#DCE3EC',5),alts:['a1','a2','a3'],ret:'Можно вернуть в течение 15 дней',
+     props:[['Тип','Держатель для кабеля'],['Количество в упаковке','1 шт'],['Цвет','Белый'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
+ a1:{t:'Держатель для кабелей самоклеящийся, 5 разъёмов, белый',p:89,o:299,r:4.9,n:1425,cross:false,from:'Склад Ozon, Москва',fromS:'Со склада Ozon, Москва',days:1,date:'Завтра',dateL:'завтра, 11 октября',seller:'Кабель Хаус',art:'1278894410',img:()=>holder('#FFFFFF','#CBD5E1',5),ret:'Можно вернуть в течение 7 дней',
+     props:[['Тип','Держатель для кабеля'],['Количество в упаковке','1 шт'],['Цвет','Белый'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
+ a2:{t:'Органайзер для кабелей на стол, 5 слотов, с клеевой основой',p:74,o:249,r:4.8,n:232,cross:false,from:'Склад продавца, Подольск',fromS:'Со склада продавца, Подольск',days:2,date:'Послезавтра',dateL:'послезавтра, 12 октября',seller:'Порядок Дома',art:'2095561873',img:()=>holder('#E9EDF2','#B9C4D2',5),ret:'Можно вернуть в течение 7 дней',
+     props:[['Тип','Органайзер для кабеля'],['Количество в упаковке','1 шт'],['Цвет','Серый'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
+ a3:{t:'Держатель для проводов, 3 отверстия, чёрный, набор 2 шт',p:67,o:379,r:4.9,n:544,cross:false,from:'Склад Ozon, Казань',fromS:'Со склада Ozon, Казань',days:3,date:'13 октября',dateL:'13 октября',seller:'ОРТ',art:'1850007342',img:()=>holder('#2B3440','#111820',3),ret:'Можно вернуть в течение 7 дней',
+     props:[['Тип','Держатель для кабеля'],['Количество в упаковке','2 шт'],['Цвет','Чёрный'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
+ p2:{t:'Держатель для проводов настенный, силиконовый, «кошачья лапка», розовый',p:64,o:262,r:0,n:0,cross:true,from:'Китай, Иу',fromS:'Со склада продавца, Yiwu',days:16,date:'26 октября',seller:'MeowHome',art:'4012237765',img:()=>paw('#FFC4DA'),alts:[],ret:'Можно вернуть в течение 15 дней',
+     props:[['Тип','Держатель для кабеля'],['Количество в упаковке','1 шт'],['Цвет','Розовый'],['Материал','Силикон'],['Страна-изготовитель','Китай']]},
+ l1:{t:'Хомут-липучка многоразовая для проводов, 150 мм, 10 шт',p:58,o:462,r:4.9,n:1078,cross:false,days:3,date:'13 октября',img:()=>strap('#7BC86C')},
+ l2:{t:'Органайзер для проводов, магнитный, 6 слотов',p:69,o:229,r:5.0,n:7,cross:true,days:16,date:'26 октября',img:()=>holder('#3A4452','#1E2530',4)},
+ l3:{t:'Контейнер для хранения вилок и зарядок, 3 секции',p:71,o:0,r:4.7,n:96,cross:true,days:15,date:'25 октября',img:()=>box('#A8C8FF')},
+ l4:{t:'Держатель кабеля под стол, клипсы прозрачные, 20 шт',p:72,o:266,r:4.8,n:61,cross:false,days:1,date:'Завтра',img:()=>strap('#D7E3F3')},
+ l5:{t:'Органайзер для флешек и карт памяти, белый',p:73,o:170,r:5.0,n:3,cross:true,days:12,date:'22 октября',img:()=>box('#EEF2F7')},
+};
+const listOrder=['p1','a1','l2','a2','l1','p2','a3','l3','l4','l5'];
+
+/* ---------- Состояние ---------- */
+const S={mode:'new',view:'list',cur:'p1',origin:'p1',f7:false,fRu:false,cart:{},altSort:'fast',choice:'gu',firstAbroadOk:false};
+const $=s=>document.querySelector(s);
+const fmt=n=>n.toLocaleString('ru-RU').replace(/ /g,' ')+' ₽';
+const star='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.3l-5.6 2.9 1.1-6.3L2.9 9.5l6.3-.9z"/></svg>';
+const plane='<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M21 15.5v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0v5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z"/></svg>';
+function weeks(d){return d>=14?Math.round(d/7)+' нед.':d+' дн.'}
+function dWord(n){const a=n%10,b=n%100;if(a===1&&b!==11)return 'день';if(a>=2&&a<=4&&(b<12||b>14))return 'дня';return 'дней'}
+function revWord(n){const a=n%10,b=n%100;if(a===1&&b!==11)return 'отзыв';if(a>=2&&a<=4&&(b<12||b>14))return 'отзыва';return 'отзывов'}
+
+/* ---------- Выдача ---------- */
+function renderList(){
+  const old=S.mode==='old';
+  let items=listOrder.map(id=>({id,...P[id]}));
+  if(S.f7) items=items.filter(x=> old ? true : x.days<=7); // сейчас: фильтр пропускает товары из Китая
+  if(S.fRu && !old) items=items.filter(x=>!x.cross);
+  $('#resCnt').textContent=items.length+' '+(items.length===1?'товар':items.length<5?'товара':'товаров')+' из 12 400';
+  const h=$('#fHint');
+  if(S.f7&&old){h.hidden=false;h.className='filter-hint bad';h.innerHTML='Сейчас в фильтр «до 7 дней» попадают товары из Китая со сроком 2-3 недели (так пишут покупатели в отзывах)';}
+  else if(S.f7&&!old){h.hidden=false;h.className='filter-hint';const k=listOrder.filter(id=>P[id].days>7).length;h.innerHTML='Скрыли '+k+' '+(k%10>=2&&k%10<=4&&(k%100<12||k%100>14)?'товара':k%10===1&&k%100!==11?'товар':'товаров')+' с доставкой дольше 7 дней, в том числе из-за рубежа';}
+  else h.hidden=true;
+  $('#grid').innerHTML=items.length?items.map(x=>{
+    const far=x.cross&&!old;
+    const disc=x.o?Math.round((1-x.p/x.o)*100):0;
+    return `<article class="tile${far?' far':''}" data-id="${x.id}" tabindex="0" aria-label="${x.t}">
+      <div class="ph">${x.img()}${far?`<span class="badge-abroad">${plane}Из-за рубежа</span>`:''}<span class="fav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7.5-4.9-7.5-10.3A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.7C19.5 15.1 12 20 12 20z"/></svg></span></div>
+      <div class="prc"><b>${fmt(x.p)}</b>${x.o?`<s>${fmt(x.o)}</s><em>−${disc}%</em>`:''}</div>
+      <div class="nm">${x.t}</div>
+      <div class="rt">${x.n?star+' '+x.r.toFixed(1)+' · '+x.n.toLocaleString('ru-RU').replace(/ /g,' ')+' '+revWord(x.n):'<span style="color:var(--text-3)">Нет отзывов</span>'}</div>
+      <div class="dbtn">${x.date}${far?` <small>· ${weeks(x.days)}</small>`:''}</div>
+    </article>`}).join(''):`<div class="empty-res">Ничего не нашлось. Попробуйте убрать фильтр.</div>`;
+  document.querySelectorAll('.tile').forEach(t=>{
+    const open=()=>{const id=t.dataset.id; if(!P[id].props){toast('В концепте карточка открывается у отмеченных товаров');return;} S.cur=id;S.origin=P[id].cross?id:S.origin;go('pdp')};
+    t.onclick=open; t.onkeydown=e=>{if(e.key==='Enter')open()};
+  });
+  $('#f7').classList.toggle('on',S.f7); $('#fRu').classList.toggle('on',S.fRu);
+}
+
+/* ---------- Карточка ---------- */
+function renderPdp(){
+  const x=P[S.cur], old=S.mode==='old';
+  $('#pTitle').textContent=x.t;
+  $('#pRating').innerHTML=x.n?`<span style="color:var(--star);display:flex">${star}</span> ${x.r.toFixed(1)} · ${x.n.toLocaleString('ru-RU').replace(/ /g,' ')} ${revWord(x.n)}`:`<span style="color:var(--text-3);display:flex">${star}</span> Нет отзывов`;
+  $('#pArt').textContent='Артикул: '+x.art;
+  $('#pProps').innerHTML=x.props.map(p=>`<div>${p[0]}</div><div>${p[1]}</div>`).join('');
+  $('#pDescr').innerHTML=`<p>Держит зарядки и провода на месте: кабель не падает со стола и не путается. Крепится на клеевую основу к столу, стене или тумбе.</p><p>Продавец: ${x.seller}. Магазин отправляет заказы ${x.cross?'из-за рубежа':'со склада в России'}.</p>`;
+  $('#mainph').innerHTML=x.img()+`<span class="lbl">Похожие</span><span class="pick"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21h4V10H2zm20-10c0-1.1-.9-2-2-2h-6.3l1-4.6v-.3c0-.4-.2-.8-.4-1.1L13.2 2 7 8.6V21h11c.8 0 1.5-.5 1.8-1.2l3-7.1c.1-.2.1-.5.1-.7z"/></svg>Цена что надо</span>`;
+  $('#thumbs').innerHTML=[0,1,2,3].map(i=>`<button class="${i?'':'on'}" aria-label="Фото ${i+1}">${x.img()}</button>`).join('');
+  $('#pPrice').textContent=fmt(x.p); $('#pPrice2').textContent=fmt(Math.round(x.p*1.05)); $('#pOld').textContent=x.o?fmt(x.o):'';
+  $('#pLater').textContent='без % до 28 декабря';
+  // полоса «Откуда и когда»
+  const o=$('#origin');
+  if(x.cross){o.className='origin far';o.innerHTML=`<span class="ic">${plane.replace(/13/g,'22')}</span><div><div class="t1">Едет из-за рубежа</div><div class="t2">${x.from} · приедет ${x.date}</div></div><div class="days"><b>${x.days} ${dWord(x.days)}</b><span>в пути</span></div>`;}
+  else{o.className='origin near';o.innerHTML=`<span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="2" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="17.5" r="2" fill="#fff" stroke="currentColor" stroke-width="2"/></svg></span><div><div class="t1">Со склада в России</div><div class="t2">${x.from} · оплата при получении</div></div><div class="days"><b>${x.date}</b><span>${x.days} ${dWord(x.days)}</span></div>`;}
+  $('#terms').style.display=x.cross?'block':'none';
+  // кнопка
+  const inCart=S.cart[S.cur]||0;
+  $('#addBtn').style.display=inCart?'none':'flex';
+  $('#stepper').classList.toggle('on',!!inCart);
+  $('#qty').textContent=inCart+' шт';
+  $('#addSub').textContent=old?('Доставим '+(x.cross?'с '+x.date:x.dateL||x.date)):(x.cross?'с '+x.date+' · из-за рубежа':(x.dateL?x.dateL.charAt(0).toUpperCase()+x.dateL.slice(1):x.date));
+  // старое «Есть быстрее»
+  $('#fasterOld').innerHTML=x.cross&&x.alts&&x.alts.length?`<svg width="28" height="28" viewBox="0 0 28 28"><rect width="28" height="28" rx="8" fill="#fff"/><rect x="8" y="8" width="12" height="12" rx="4" fill="#DCE3EC"/></svg><span>Есть быстрее<br><b>от ${fmt(Math.min(...x.alts.map(a=>P[a].p)))}</b></span><span class="n">›</span>`:'';
+  $('#fasterOld').style.visibility=(x.cross&&x.alts&&x.alts.length)?'visible':'hidden';
+  // блок сравнения
+  renderAlts();
+  // доставка
+  $('#dlFrom').textContent=x.fromS;
+  $('#dlDate').textContent=x.cross?'С '+x.date:(x.dateL?x.dateL.charAt(0).toUpperCase()+x.dateL.slice(1):x.date);
+  $('#dlAbroad').style.visibility=x.cross?'visible':'hidden';
+  $('#dlRet').textContent=x.ret;
+  // мобильная панель
+  $('#mPrice').textContent=fmt(x.p);
+  $('#mDate').textContent=old?('Доставим '+(x.cross?'с '+x.date:x.date.toLowerCase())):(x.cross?'Из-за рубежа · '+x.days+' '+dWord(x.days):'Из России · '+x.date.toLowerCase());
+  $('#mAdd').innerHTML=inCart?'<b>В корзине · '+inCart+' шт</b>':'<b>В корзину</b>';
+}
+function renderAlts(){
+  const x=P[S.cur], box=$('#alts');
+  if(!x.cross){
+    const orig=P[S.origin];
+    box.innerHTML=(S.origin&&S.origin!==S.cur&&orig&&orig.cross)?`<div class="back-orig"><span>Вариант из Китая стоит ${fmt(orig.p)}, но приедет ${orig.date}</span><button class="btn-s light" id="backOrig">Вернуться</button></div>`:'';
+    box.style.display=box.innerHTML?'block':'none';
+    const b=$('#backOrig'); if(b) b.onclick=()=>{S.cur=S.origin;renderPdp();scrollTop()};
+    if(S.mode==='old') box.style.display='none';
+    return;
+  }
+  box.style.display=S.mode==='old'?'none':'block';
+  if(!x.alts.length){
+    box.innerHTML=`<h4>Не хотите ждать ${x.days} ${dWord(x.days)}?</h4><div class="alt-empty">${illEmpty}<b>Быстрее аналогов нет</b><span>Такой держатель сейчас продают только продавцы из-за рубежа. Сообщим, если похожий появится на складе в России.</span><button class="btn-s" id="notifyBtn">Сообщить о появлении</button></div>`;
+    $('#notifyBtn').onclick=e=>{e.target.textContent='Подписка оформлена';e.target.classList.add('light');toast('Пришлём уведомление, когда появится аналог из России')};
+    return;
+  }
+  const list=[...x.alts].sort((a,b)=>S.altSort==='fast'?P[a].days-P[b].days:P[a].p-P[b].p);
+  box.innerHTML=`<h4>Не хотите ждать ${x.days} ${dWord(x.days)}?</h4><div class="sub2">Похожие товары со складов в России</div>
+   <div class="seg"><button data-s="fast" class="${S.altSort==='fast'?'on':''}">Быстрее всего</button><button data-s="cheap" class="${S.altSort==='cheap'?'on':''}">Дешевле всего</button></div>
+   <div class="alt-list">${list.map(id=>{const a=P[id];const d=a.p-x.p;const save=x.days-a.days;return `<div class="alt">
+     <div class="th">${a.img()}</div>
+     <div><div class="an">${a.t}</div><div class="am"><span class="dpill">${a.date}</span><span class="rt">${star} ${a.r.toFixed(1)}</span></div></div>
+     <div class="ar"><b>${fmt(a.p)}</b><small>+${d} ₽ · на ${save} ${dWord(save)} раньше</small><button class="btn-s" data-pick="${id}">Выбрать</button></div>
+   </div>`}).join('')}</div>`;
+  box.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{S.altSort=b.dataset.s;renderAlts()});
+  box.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>pick(b.dataset.pick));
+}
+function pick(id){const from=S.cur;S.origin=from;S.cur=id;renderPdp();scrollTop();
+  toast('Показываем вариант со склада в России: '+P[id].date.toLowerCase(),'Вернуть',()=>{S.cur=from;renderPdp()});}
+function scrollTop(){ if(window.innerWidth<=860){$('.buycol').scrollIntoView({behavior:'smooth',block:'start'})} else window.scrollTo({top:0,behavior:'smooth'}) }
+
+/* ---------- Корзина ---------- */
+function add(){const x=P[S.cur];
+  if(x.cross&&S.mode==='new'&&!S.firstAbroadOk){openAbroad();return;}
+  doAdd();}
+function doAdd(){S.cart[S.cur]=(S.cart[S.cur]||0)+1;updCart();renderPdp();
+  const x=P[S.cur];
+  toast(x.cross&&S.mode==='new'?(S.choice==='gu'?'В корзине. После оплаты подставим паспорт из Госуслуг':'В корзине. Напомним ввести паспорт после оплаты'):'Товар добавлен в корзину','Перейти',()=>toast('В концепте корзина не реализована'));}
+function updCart(){const n=Object.values(S.cart).reduce((a,b)=>a+b,0);const c=$('#cartCnt');c.textContent=n;c.classList.toggle('on',n>0)}
+function openAbroad(){const x=P[S.cur];
+  $('#abIll').innerHTML=illRoute.replace('14 дней',x.days+' '+dWord(x.days)).replace('>CN<','>CN<');
+  $('#abH').textContent='Этот товар едет из Китая';
+  $('#abDate').textContent=x.date;
+  $('#abSum').innerHTML=`<span class="th">${x.img()}</span><div><b>${fmt(x.p)} · предоплата</b><span>${x.from} · отменить можно до сборки заказа</span></div>`;
+  $('#abFast').style.display=x.alts&&x.alts.length?'block':'none';
+  open('#ovAbout',false);open('#ovAbroad',true);}
+
+/* ---------- Общие ---------- */
+function go(v){S.view=v;$('#vList').classList.toggle('on',v==='list');$('#vPdp').classList.toggle('on',v==='pdp');document.body.classList.toggle('pdp-on',v==='pdp');
+  if(v==='list')renderList();else renderPdp();window.scrollTo(0,0);}
+function setMode(m){S.mode=m;document.body.classList.toggle('mode-old',m==='old');$('#mOld').classList.toggle('on',m==='old');$('#mNew').classList.toggle('on',m==='new');
+  if(S.view==='list')renderList();else renderPdp();
+  toast(m==='old'?'Так карточка и выдача выглядят сейчас':'Так могло бы быть с блоком «Откуда и когда»');}
+let lastFocus=null;
+function open(sel,on){const el=$(sel);if(on){lastFocus=document.activeElement;el.classList.add('on');setTimeout(()=>{const f=el.querySelector('.close');f&&f.focus()},30)}else{el.classList.remove('on');lastFocus&&lastFocus.focus&&lastFocus.focus()}}
+let tt;function toast(t,a,fn){$('#toastT').textContent=t;const b=$('#toastA');if(a){b.hidden=false;b.textContent=a;b.onclick=()=>{fn&&fn();$('#toast').classList.remove('on')}}else b.hidden=true;
+  $('#toast').classList.add('on');clearTimeout(tt);tt=setTimeout(()=>$('#toast').classList.remove('on'),3800);}
+
+/* ---------- События ---------- */
+$('#mOld').onclick=()=>setMode('old'); $('#mNew').onclick=()=>setMode('new');
+$('#aboutBtn').onclick=()=>open('#ovAbout',true);
+$('#f7').onclick=()=>{S.f7=!S.f7;renderList()}; $('#fRu').onclick=()=>{S.fRu=!S.fRu;renderList()};
+$('#termsH').onclick=()=>{const t=$('#terms');t.classList.toggle('open');$('#termsH').setAttribute('aria-expanded',t.classList.contains('open'))};
+$('#addBtn').onclick=add; $('#mAdd').onclick=()=>{if(S.cart[S.cur]){toast('Товар уже в корзине','Перейти',()=>toast('В концепте корзина не реализована'))}else add()};
+$('#plus').onclick=()=>{S.cart[S.cur]++;updCart();renderPdp()};
+$('#minus').onclick=()=>{S.cart[S.cur]--;if(S.cart[S.cur]<=0){delete S.cart[S.cur];toast('Товар удалён из корзины')}updCart();renderPdp()};
+document.querySelectorAll('#abOpts .opt').forEach(o=>o.onclick=()=>{document.querySelectorAll('#abOpts .opt').forEach(x=>x.classList.remove('on'));o.classList.add('on');S.choice=o.dataset.v});
+$('#abOk').onclick=()=>{S.firstAbroadOk=true;open('#ovAbroad',false);doAdd()};
+$('#abFast').onclick=()=>{open('#ovAbroad',false);const b=$('#alts');b.scrollIntoView({behavior:'smooth',block:'center'});b.animate([{boxShadow:'0 0 0 0 rgba(0,91,255,.5)'},{boxShadow:'0 0 0 6px rgba(0,91,255,0)'}],{duration:900,iterations:2})};
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>open('#'+b.closest('.ov').id,false));
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)open('#'+o.id,false)}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.ov.on').forEach(o=>open('#'+o.id,false))});
+document.querySelectorAll('[data-go]').forEach(a=>a.onclick=e=>{e.preventDefault();go(a.dataset.go)});
+
+$('#aboutIll').innerHTML=illRoute;
+renderList(); updCart();
+let seen=false;try{seen=sessionStorage.getItem('ozc-about')==='1'}catch(e){}
+if(!seen){open('#ovAbout',true);try{sessionStorage.setItem('ozc-about','1')}catch(e){}}
+</script>
+</body>
+</html>
